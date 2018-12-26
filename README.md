@@ -1,2 +1,2 @@
-# nusers
+# n-users
 Facebook account parser
