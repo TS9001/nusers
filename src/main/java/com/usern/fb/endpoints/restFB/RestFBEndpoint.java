@@ -1,6 +1,7 @@
 package com.usern.fb.endpoints.restFB;
 
 import com.restfb.*;
+import com.restfb.exception.FacebookOAuthException;
 import com.restfb.types.Photo;
 import com.restfb.types.User;
 import com.usern.fb.endpoints.GraphAPIEndpoint;

@@ -1,7 +1,12 @@
 package com.usern.fb.messages.request;
 
+import javax.validation.constraints.NotEmpty;
+
 public class UserDetailsRequest {
+    @NotEmpty(message = "Valid Facebook user ID must be provided!")
     private String fbId;
+
+    @NotEmpty(message = "Valid Facebook user access token must be provided!")
     private String accessToken;
 
     public String getFbId() {
