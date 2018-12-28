@@ -1,5 +1,6 @@
 package com.usern.fb.controller;
 
+import com.usern.fb.controller.mapper.UserControllerMapper;
 import com.usern.fb.endpoints.GraphAPIEndpoint;
 import com.usern.fb.entity.FBUserEntity;
 import com.usern.fb.entity.FBUserPhotoEntity;
@@ -23,6 +24,9 @@ public class UserController {
     @Autowired
     private FBUserRepository fbUserRepository;
 
+    @Autowired
+    private UserControllerMapper userControllerMapper;
+
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     public String upsertUser(@RequestBody UserDetailsRequest userRequest) {
@@ -32,21 +36,25 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{userFbId}")
-    public String deleteUser(@PathVariable String userFbId) {
-        fbUserRepository.removeByFacebookId(userFbId);
+    public String deleteUser(@PathVariable Long userFbId) {
+        fbUserRepository.removeByFacebookId(userFbId)
+                .orElseThrow(() -> new RuntimeException("User with facebookId " + userFbId + " was not found!"));
         return String.valueOf(HttpStatus.OK);
     }
 
     @GetMapping("/users/{userFbId}")
-    public UserDetailsResponse getUserDetails(@PathVariable String userFbId) {
-        Optional<FBUserEntity> userDetails = fbUserRepository.findByFacebookId(userFbId);
-        return new UserDetailsResponse(userDetails.get());
+    public UserDetailsResponse getUserDetails(@PathVariable Long userFbId) {
+        FBUserEntity userDetails = fbUserRepository.findByFacebookId(userFbId)
+                .orElseThrow(() -> new RuntimeException("User with facebookId " + userFbId + " was not found!"));
+        return userControllerMapper.mapFBUserEntityToUserDetailsResponse(userDetails);
     }
 
     @GetMapping("/users/{userFbId}/photos")
-    public UserPhotoResponse upsertUserPhotos(@PathVariable String userFbId) {
-        Optional<List<FBUserPhotoEntity>> photos = fbUserRepository.findPhotosByFacebookId(userFbId);
-        return new UserPhotoResponse(photos.get());
+    public List<UserPhotoResponse> upsertUserPhotos(@PathVariable Long userFbId) {
+        FBUserEntity userDetails = fbUserRepository.findByFacebookId(userFbId)
+                .orElseThrow(() -> new RuntimeException("User with facebookId " + userFbId + " was not found!"));
+        List<FBUserPhotoEntity> photos = userDetails.getPhotos();
+        return userControllerMapper.mapFBPhotoEntityToUserDetailsResponses(photos);
     }
 
 

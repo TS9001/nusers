@@ -1,13 +1,11 @@
 package com.usern.fb.entity;
 
 
-import com.usern.fb.endpoints.mapper.RestFBToEntityMapper;
-
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name = "fbuser")
+@Entity(name = "FB_USER")
+@Table(name = "FB_USER")
 public class FBUserEntity {
 
     @Id
@@ -15,15 +13,15 @@ public class FBUserEntity {
     private Long facebookId;
 
     @Column(name = "name")
-    String name;
+    private String name;
 
     @Column(name = "gender")
-    String gender;
+    private String gender;
 
     @Column(name = "profile_picture_url")
-    String profilePictureUrl;
+    private String profilePictureUrl;
 
-    @OneToMany(mappedBy = "facebookId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "fbUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FBUserPhotoEntity> photos;
 
     public Long getFacebookId() {
@@ -65,6 +63,4 @@ public class FBUserEntity {
     public void setPhotos(List<FBUserPhotoEntity> photos) {
         this.photos = photos;
     }
-
-
 }

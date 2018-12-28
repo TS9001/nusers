@@ -1,23 +1,44 @@
 package com.usern.fb.messages.response;
 
-import com.usern.fb.entity.FBUserEntity;
-
 public class UserDetailsResponse {
 
-    private final long id=0;
-    private final String content=" ";
+    private Long facebookId;
 
+    private String name;
 
+    private String gender;
 
-    public long getId() {
-        return id;
+    private String profilePictureUrl;
+
+    public Long getFacebookId() {
+        return facebookId;
     }
 
-    public String getContent() {
-        return content;
+    public void setFacebookId(Long facebookId) {
+        this.facebookId = facebookId;
     }
 
-    public UserDetailsResponse(FBUserEntity userDetails) {
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 }
